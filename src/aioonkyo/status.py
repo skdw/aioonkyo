@@ -403,6 +403,38 @@ class DiscoveryStatus(_KnownStatus):
 
 
 @dataclass
+class _StringStatus(_KnownStatus):
+    kind: ClassVar[Kind]
+    value: str
+
+    __match_args__ = ("value",)
+
+    @classmethod
+    def parse(cls, code: Code, parameter: bytes) -> Self:
+        # eISCP parameters can be encoded in various ways, but utf-8 is a safe bet for modern ones.
+        # Older models might use latin-1 or shift-jis.
+        try:
+            value = parameter.decode("utf-8").strip()
+        except UnicodeDecodeError:
+            value = parameter.decode("latin-1").strip()
+        self = cls(code, parameter, value)
+        self._validate()
+        return self
+
+
+class NetArtistStatus(_StringStatus):
+    kind: ClassVar[Kind] = Kind.NET_ARTIST
+
+
+class NetAlbumStatus(_StringStatus):
+    kind: ClassVar[Kind] = Kind.NET_ALBUM
+
+
+class NetTitleStatus(_StringStatus):
+    kind: ClassVar[Kind] = Kind.NET_TITLE
+
+
+@dataclass
 class NotAvailableStatus(_KnownStatus):
     kind: Kind = field()
 
@@ -431,6 +463,9 @@ type ValidStatus = (
     | VideoInformationStatus
     | FLDisplayStatus
     | DiscoveryStatus
+    | NetArtistStatus
+    | NetAlbumStatus
+    | NetTitleStatus
 )
 
 type KnownStatus = ValidStatus | NotAvailableStatus

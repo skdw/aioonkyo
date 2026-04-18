@@ -42,6 +42,11 @@ class _MainZoneInstructionMixin:
 
 
 @dataclass
+class _DockZoneInstructionMixin:
+    zone: Zone = field(init=False, repr=False, default=Zone.DOCK)
+
+
+@dataclass
 class _Query(_Instruction):
     parameter: bytes = field(init=False, repr=False, default=b"QSTN")
 
@@ -122,6 +127,21 @@ class TemperatureQuery(_MainZoneInstructionMixin, _Query):
 @dataclass
 class DiscoveryQuery(_MainZoneInstructionMixin, _Query):
     kind: ClassVar[Kind] = Kind.DISCOVERY
+
+
+@dataclass
+class NetArtistQuery(_DockZoneInstructionMixin, _Query):
+    kind: ClassVar[Kind] = Kind.NET_ARTIST
+
+
+@dataclass
+class NetAlbumQuery(_DockZoneInstructionMixin, _Query):
+    kind: ClassVar[Kind] = Kind.NET_ALBUM
+
+
+@dataclass
+class NetTitleQuery(_DockZoneInstructionMixin, _Query):
+    kind: ClassVar[Kind] = Kind.NET_TITLE
 
 
 @dataclass
@@ -332,6 +352,9 @@ type KnownQuery = (
     | FLDisplayQuery
     | TemperatureQuery
     | DiscoveryQuery
+    | NetArtistQuery
+    | NetAlbumQuery
+    | NetTitleQuery
 )
 
 type KnownCommand = (

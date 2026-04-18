@@ -13,12 +13,13 @@ class Zone(Enum):
     ZONE2 = "zone2"
     ZONE3 = "zone3"
     ZONE4 = "zone4"
+    DOCK = "dock"
 
     def __repr__(self) -> str:
         return str(self)
 
 
-ALL_ZONES = (Zone.MAIN, Zone.ZONE2, Zone.ZONE3, Zone.ZONE4)
+ALL_ZONES = (Zone.MAIN, Zone.ZONE2, Zone.ZONE3, Zone.ZONE4, Zone.DOCK)
 
 
 class Kind(Enum):
@@ -38,6 +39,9 @@ class Kind(Enum):
     TEMPERATURE = auto()
     TV_OPERATION = auto()
     DISCOVERY = auto()
+    NET_ARTIST = auto()
+    NET_ALBUM = auto()
+    NET_TITLE = auto()
 
     def __repr__(self) -> str:
         return str(self)
@@ -140,6 +144,10 @@ class Code(CodeBase):
     CTV = Kind.TV_OPERATION, Zone.MAIN
     # DISCOVERY
     ECN = Kind.DISCOVERY, Zone.MAIN
+    # NET INFO
+    NAT = Kind.NET_ARTIST, Zone.DOCK
+    NAL = Kind.NET_ALBUM, Zone.DOCK
+    NTI = Kind.NET_TITLE, Zone.DOCK
 
 
 __all__ = [
