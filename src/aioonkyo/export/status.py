@@ -12,6 +12,7 @@ from ..status import (
     MutingStatus as Muting,
     NetAlbumStatus as NetAlbum,
     NetArtistStatus as NetArtist,
+    NetJacketArtStatus as NetJacketArt,
     NetTitleStatus as NetTitle,
     NotAvailableStatus as NotAvailable,
     PowerStatus as Power,

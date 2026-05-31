@@ -42,6 +42,7 @@ class Kind(Enum):
     NET_ARTIST = auto()
     NET_ALBUM = auto()
     NET_TITLE = auto()
+    NET_JACKET_ART = auto()
 
     def __repr__(self) -> str:
         return str(self)
@@ -148,6 +149,7 @@ class Code(CodeBase):
     NAT = Kind.NET_ARTIST, Zone.DOCK
     NAL = Kind.NET_ALBUM, Zone.DOCK
     NTI = Kind.NET_TITLE, Zone.DOCK
+    NJA = Kind.NET_JACKET_ART, Zone.DOCK
 
 
 __all__ = [

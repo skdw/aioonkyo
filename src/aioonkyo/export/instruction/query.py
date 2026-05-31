@@ -11,6 +11,7 @@ from ...instruction import (
     MutingQuery as Muting,
     NetAlbumQuery as NetAlbum,
     NetArtistQuery as NetArtist,
+    NetJacketArtQuery as NetJacketArt,
     NetTitleQuery as NetTitle,
     PowerQuery as Power,
     TemperatureQuery as Temperature,

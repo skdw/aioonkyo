@@ -435,6 +435,46 @@ class NetTitleStatus(_StringStatus):
 
 
 @dataclass
+class NetJacketArtStatus(_KnownStatus):
+    kind: ClassVar[Kind] = Kind.NET_JACKET_ART
+
+    image_type: int
+    packet_flag: int
+    data: str
+
+    __match_args__ = ("image_type", "packet_flag", "data")
+
+    @classmethod
+    def parse(cls, code: Code, parameter: bytes) -> Self:
+        # tp{xx...} where t is type, p is flag
+        # or special values like 'LINK', 'ENA', etc.
+        try:
+            image_type_raw = parameter[0:1]
+            packet_flag_raw = parameter[1:2]
+            # Check if t and p are numeric
+            if image_type_raw.isdigit() and packet_flag_raw in b"012-":
+                image_type = int(image_type_raw)
+                # packet_flag can be '-' which we'll treat as a special value (e.g., 9)
+                packet_flag = int(packet_flag_raw) if packet_flag_raw.isdigit() else 9
+                data = parameter[2:].decode("ascii")
+            else:
+                # Handle things like 'LINK', 'ENA', 'DIS'
+                # We'll treat them as image_type 9 (Special)
+                image_type = 9
+                packet_flag = 9
+                data = parameter.decode("ascii").strip()
+
+        except (ValueError, IndexError, UnicodeDecodeError):
+            image_type = 9
+            packet_flag = 9
+            data = parameter.hex()
+
+        self = cls(code, parameter, image_type, packet_flag, data)
+        self._validate()
+        return self
+
+
+@dataclass
 class NotAvailableStatus(_KnownStatus):
     kind: Kind = field()
 
@@ -466,6 +506,7 @@ type ValidStatus = (
     | NetArtistStatus
     | NetAlbumStatus
     | NetTitleStatus
+    | NetJacketArtStatus
 )
 
 type KnownStatus = ValidStatus | NotAvailableStatus

@@ -145,6 +145,11 @@ class NetTitleQuery(_DockZoneInstructionMixin, _Query):
 
 
 @dataclass
+class NetJacketArtQuery(_DockZoneInstructionMixin, _Query):
+    kind: ClassVar[Kind] = Kind.NET_JACKET_ART
+
+
+@dataclass
 class _ParamCommand[ParamT: ParamEnum](_Instruction):
     kind: ClassVar[Kind]
 
@@ -355,6 +360,7 @@ type KnownQuery = (
     | NetArtistQuery
     | NetAlbumQuery
     | NetTitleQuery
+    | NetJacketArtQuery
 )
 
 type KnownCommand = (
